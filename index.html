@@ -6,6 +6,7 @@
 <script type="text/javascript" src="cordova-2.1.0.js"></script>
 <script type="text/javascript">
 var ac;
+var awID;
 var pgr = false;
 function onBodyLoad(){
 	document.addEventListener("deviceready", onDeviceReady, false);	
@@ -18,6 +19,8 @@ function onDeviceReady() {
 	ac.innerHTML ="AC Spreman";
 	pgr = true;
 	element.innerHTML = 'PhoneGap (verzija ' + device.phonegap + ')<br />' + device.platform + ' ' + device.name + ' (version ' + device.version + ').';
+	var accelOptions = {frequency: 50};
+	awID = navigator.accelerometer.watchAcceleration(onAccelSuccess, onAccelFailure, accelOptions);
 }
 function getAcceleration() {
 	//if (pgr==true){
@@ -32,7 +35,7 @@ function onAccelSuccess(accel) {
 	var d = new Date(accel.timestamp);
 				var ac = document.getElementById('accelInfo');
 
-	ac.innerHTML = "<strong>Trenutna akceleracija: </strong><br>X: " + accel.x + "<br />Y: " + accel.y + "<br />Z: " + accel.z + "<br />Timestamp: " + d.toLocaleDateString();
+	ac.innerHTML = "<strong>Trenutni položaj: </strong><br>X: " + accel.x + "<br />Y: " + accel.y + "<br />Z: " + accel.z + "<br />Timestamp: " + d.toLocaleDateString();
 	}
 	function onAccelFailure(accel) {
 	
