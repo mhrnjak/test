@@ -1,11 +1,49 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+<meta charset="utf-8">
+<title>PhoneGap test</title>
+<script type="text/javascript" src="cordova-2.1.0.js"></script>
+<script type="text/javascript">
+var ac;
+var pgr = false;
+function onBodyLoad(){
+	document.addEventListener("deviceready", onDeviceReady, false);	
+	var element = document.getElementById('appInfo');
+	element.innerHTML ="";
+}
+function onDeviceReady() {
+	var element = document.getElementById('appInfo');
+	var ac = document.getElementById('accelInfo');
+	ac.innerHTML ="AC Spreman";
+	pgr = true;
+	element.innerHTML = 'PhoneGap (verzija ' + device.phonegap + ')<br />' + device.platform + ' ' + device.name + ' (version ' + device.version + ').';
+}
+function getAcceleration() {
+	//if (pgr==true){
+			var ac = document.getElementById('accelInfo');
+
+		ac.innerHTML="aaa";
+		navigator.accelerometer.getCurrentAcceleration(onAccelSuccess, onAccelFailure);		
+	//}
+	/*else {alert("PhoneGap nije spreman!");}*/
+}
+function onAccelSuccess(accel) {
+	var d = new Date(accel.timestamp);
+				var ac = document.getElementById('accelInfo');
+
+	ac.innerHTML = "<strong>Trenutna akceleracija: </strong><br>X: " + accel.x + "<br />Y: " + accel.y + "<br />Z: " + accel.z + "<br />Timestamp: " + d.toLocaleDateString();
+	}
+	function onAccelFailure(accel) {
+	
+	ac.innerHTML = "Fail!";
+	}
+</script>
 </head>
 
-<body>
-<strong>Hello world!
-</strong></body>
+<body onLoad="onBodyLoad()">
+<p><input type="button" value="Saznaj akceleraciju" onClick="getAcceleration()" /></p>
+<p id="appInfo"></p>
+<p id="accelInfo"></p>
+</body>
 </html>
