@@ -7,21 +7,46 @@
 <script type="text/javascript">
 var ac;
 var awID;
+var watchID, hi;
 var pgr = false;
 function onBodyLoad(){
 	document.addEventListener("deviceready", onDeviceReady, false);	
 	var element = document.getElementById('appInfo');
+	var hasCompass = true;
 	element.innerHTML ="";
 }
 function onDeviceReady() {
 	var element = document.getElementById('appInfo');
 	var ac = document.getElementById('accelInfo');
 	ac.innerHTML ="AC Spreman";
+	var hc = document.getElementById('headingInfo');
+	hc.innerHTML ="Kompas spreman";
 	pgr = true;
 	element.innerHTML = 'PhoneGap (verzija ' + device.phonegap + ')<br />' + device.platform + ' ' + device.name + ' (version ' + device.version + ').';
 	var accelOptions = {frequency: 50};
 	awID = navigator.accelerometer.watchAcceleration(onAccelSuccess, onAccelFailure, accelOptions);
+	var watchOptions = {frequency: 500};
+	watchID = navigator.compass.watchHeading(onHeadingSuccess, onHeadingError, watchOptions);
 }
+function getHeading() {
+		var hc = document.getElementById('headingInfo');
+		hc.innerHTML = "Učitavam kompas...";
+		navigator.compass.getCurrentHeading(onHeadingSuccess, onHeadingError);
+}
+function onHeadingSuccess(heading){
+			var hc = document.getElementById('headingInfo');
+hc.innerHTML="tu sam";
+		hc.innerHTML = "Magnetic heading: " + heading.magneticHeading + "<br />True heading: " + heading.trueHeading + "<br />Točnost: " + heading.headingAccuracy;
+
+}
+
+function onHeadingError(){
+			var hc = document.getElementById('headingInfo');
+hc.innerHTML="tu sam error";
+		
+}
+
+
 function getAcceleration() {
 	//if (pgr==true){
 			var ac = document.getElementById('accelInfo');
@@ -45,8 +70,8 @@ function onAccelSuccess(accel) {
 </head>
 
 <body onLoad="onBodyLoad()">
-<p><input type="button" value="Saznaj akceleraciju" onClick="getAcceleration()" /></p>
 <p id="appInfo"></p>
 <p id="accelInfo"></p>
+<p id="headingInfo"></p>
 </body>
 </html>
