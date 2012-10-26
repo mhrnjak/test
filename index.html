@@ -61,17 +61,32 @@ function onAccelSuccess(accel) {
 				var ac = document.getElementById('accelInfo');
 
 	ac.innerHTML = "<strong>Trenutni položaj: </strong><br>X: " + accel.x + "<br />Y: " + accel.y + "<br />Z: " + accel.z + "<br />Timestamp: " + d.toLocaleDateString();
+	 
+	  $("#kocka").animate({"left": "+=" + accel.x}, "fast");
+
 	}
 	function onAccelFailure(accel) {
 	
 	ac.innerHTML = "Fail!";
 	}
 </script>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <style>
+#kocka {
+  position:absolute;
+  background-color:#abc;
+  left:50px;
+  width:90px;
+  height:90px;
+  margin:5px;
+}
+</style>
 </head>
 
 <body onLoad="onBodyLoad()">
 <p id="appInfo"></p>
 <p id="accelInfo"></p>
 <p id="headingInfo"></p>
+<div id="kocka"></div>
 </body>
 </html>
