@@ -23,9 +23,9 @@ function onDeviceReady() {
 	hc.innerHTML ="Kompas spreman";
 	pgr = true;
 	element.innerHTML = 'PhoneGap (verzija ' + device.phonegap + ')<br />' + device.platform + ' ' + device.name + ' (version ' + device.version + ').';
-	var accelOptions = {frequency: 50};
+	var accelOptions = {frequency: 400};
 	awID = navigator.accelerometer.watchAcceleration(onAccelSuccess, onAccelFailure, accelOptions);
-	var watchOptions = {frequency: 500};
+	var watchOptions = {frequency: 400};
 	watchID = navigator.compass.watchHeading(onHeadingSuccess, onHeadingError, watchOptions);
 }
 function getHeading() {
@@ -57,14 +57,19 @@ function getAcceleration() {
 	/*else {alert("PhoneGap nije spreman!");}*/
 }
 function onAccelSuccess(accel) {
+	
 	var d = new Date(accel.timestamp);
-				var ac = document.getElementById('accelInfo');
+	var ac = document.getElementById('accelInfo');
+	
+	var x = parseInt(accel.x,10);
+	
+	ac.innerHTML = "<strong>Trenutni položaj: </strong><br>X: " + accel.x + "<br />Y: " + accel.y + "<br />Z: " + accel.z + "<br />Timestamp: " + d.toLocaleDateString() + "<br />X:" +x; ;
 
-	ac.innerHTML = "<strong>Trenutni položaj: </strong><br>X: " + accel.x + "<br />Y: " + accel.y + "<br />Z: " + accel.z + "<br />Timestamp: " + d.toLocaleDateString();
-	 
-	  $("#kocka").animate({"left": "+=" + accel.x}, "fast");
 
-	}
+	  $("#kocka").animate({"left": "+=" + x + "px"});
+	  
+	  }
+	
 	function onAccelFailure(accel) {
 	
 	ac.innerHTML = "Fail!";
